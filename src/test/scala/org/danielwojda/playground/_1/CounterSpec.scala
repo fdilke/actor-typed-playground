@@ -1,9 +1,10 @@
 package org.danielwojda.playground._1
 
 import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import akka.actor.typed.{ActorRef, ActorSystem, Behavior, Scheduler}
 import akka.util.Timeout
+import org.danielwojda.playground._1.CounterActor.{Command, Counter, Get, Inc}
 import org.scalatest.FlatSpecLike
 
 import scala.concurrent.duration._
@@ -61,3 +62,27 @@ object CounterActor {
       Behaviors.same
   }
 }
+
+//
+//object CounterActor { // More Object Oriented version
+//  //Protocol
+//  sealed trait Command //root type of all incoming messages
+//  final case object Inc extends Command
+//  final case class Counter(value: Long) // used as a response only
+//  final case class Get(replyTo: ActorRef[Counter]) extends Command
+//
+//  def apply(): Behavior[CounterActor.Command] = Behaviors.setup(ctx => new CounterActor(ctx))
+//}
+//
+//private class CounterActor(context: ActorContext[Command]) extends AbstractBehavior[Command](context) {
+//  private var counter: Long = 0
+//
+//  override def onMessage(msg: Command): Behavior[Command] = msg match {
+//    case Inc =>
+//      counter = counter + 1
+//      Behaviors.same
+//    case Get(replyTo) =>
+//      replyTo ! Counter(counter)
+//      Behaviors.same
+//  }
+//}
