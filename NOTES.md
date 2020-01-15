@@ -2,7 +2,31 @@
 
 ## Actor
 
-## Actor System
+Stateful beings
+Has Mailbox (message queue), FIFO order 
+Processes one message at a time !!!
+Lightweight
+Isolated
+State can be change only be sending(receiving) a message
+Communicate with other actors only through messages
+Don't wait for the response from other actor
+
+Allowed operations:
+* create another actor
+* send a message
+* change it's behavior
+
+Issues:
+- be aware about default conf of error handling
+- actor's mailbox overflowing
+- 
+
+## Why Actors
+
+* to store "shared" mutable state
+* to model a Finite State Machine (FSM).
+* to simplify the world and forget about concurrency
+  
 
 ## Error handling
 
