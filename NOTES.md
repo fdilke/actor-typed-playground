@@ -21,6 +21,9 @@ Issues:
 - actor's mailbox overflowing
 - Akka api and implementation can be intimidating for a new Scala devs, however it's a great source of good practices
 
+Actors are autonomous and concurrent objects which execute asynchronously. The actors model provides flexible mechanisms for building parallel and distributed software systems.
+Source: [Actor Model white paper](http://wiki.c2.com/?ActorsModel)
+ 
 ## Why Actors
 
 * to store "shared" mutable state
