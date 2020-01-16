@@ -24,9 +24,14 @@ Issues:
 ## Why Actors
 
 * to store "shared" mutable state
-* to model a Finite State Machine (FSM).
+* to model a State Machine (FSM).
 * to simplify the world and forget about concurrency
   
+## New in Typed Actors
+
+* message type check (!)
+* sender must be a part of your protocol
+* behaviors *always* returns new behavior (can be the same, but must be returned)
 
 ## Error handling
 
@@ -39,7 +44,7 @@ By default, if there is an exception thrown inside a typed actor, the actor is s
 
 You can think about `Behaviour[T]` as `T => Next Behavior` (simplification)
 
-Behaviors provides many useful factory methods, for instance:
+[Behaviors](https://doc.akka.io/api/akka/current/akka/actor/typed/scaladsl/Behaviors$.html) provides many useful factory methods, for instance:
 * Behaviors.same
 * Behaviors.receiveMessage
 * Behaviors.logMessages
