@@ -19,7 +19,7 @@ Allowed operations:
 Issues:
 - be aware about default conf of error handling
 - actor's mailbox overflowing
-- 
+- Akka api and implementation can be intimidating for a new Scala devs, however it's a great source of good practices
 
 ## Why Actors
 
