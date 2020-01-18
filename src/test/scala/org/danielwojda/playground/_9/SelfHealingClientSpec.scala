@@ -2,12 +2,20 @@ package org.danielwojda.playground._9
 
 import java.time.ZonedDateTime
 
+import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
+import org.scalatest.FlatSpecLike
+
 import scala.concurrent.duration._
 
-class SelfHealingClientSpec {
-//poc
+class SelfHealingClientSpec  extends ScalaTestWithActorTestKit with FlatSpecLike {
+
+  "Self healing client" must "reconnect if does not receive pong in 10s" in {
+    val mainActor: ActorRef[Unit] = testKit.spawn(MainActor(), "main")
+
+    Thread.sleep(20000)
+  }
 }
 
 object Client {
@@ -19,13 +27,41 @@ trait Client { //Great types, by the way
   def handlePong(handler: Client.Pong => Unit): Unit
   def reconnect(): Unit
 }
+class TestClient extends Client {
+  override def sendPing(p: Client.Ping): Unit = println("Sending Ping...")
+  override def handlePong(handler: Client.Pong => Unit): Unit = ???
+  override def reconnect(): Unit = println("reconnecting...")
+}
+
+object MainActor {
+  def apply(): Behavior[Unit] =
+    Behaviors.setup { context =>
+      val client = new TestClient()
+      val reconnectRef = context.spawn(ReconnectActor(client), "reconnect-actor")
+      val pongActor = context.spawn(PongActor(reconnectRef), "pong-actor")
+      Behaviors.ignore
+    }
+}
 
 object ReconnectActor {
-  case class Reconnect()
+  sealed trait Command
+  case class Reconnect() extends Command
+  case class SendPing() extends Command
 
-  def apply(c: Client): Behavior[Reconnect] = Behaviors.receiveMessage{ _ =>
-    c.reconnect()
-    Behaviors.same
+  def apply(c: Client): Behavior[Command] = Behaviors.withTimers{ scheduler =>
+    scheduler.startTimerAtFixedRate(SendPing(), 5.seconds)
+    behavior(c)
+  }
+
+  private def behavior(c: Client): Behaviors.Receive[Command] = {
+    Behaviors.receiveMessage {
+      case Reconnect() =>
+        c.reconnect()
+        behavior(c)
+      case SendPing() =>
+        c.sendPing(Client.Ping(7))
+        behavior(c)
+    }
   }
 }
 
