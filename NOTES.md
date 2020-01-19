@@ -3,7 +3,7 @@
 ## Actor
 
 Stateful beings
-Has Mailbox (message queue), FIFO order 
+Has Mailbox (message queue), FIFO order
 Processes one message at a time !!!
 Lightweight
 Isolated
@@ -23,13 +23,13 @@ Issues:
 
 Actors are autonomous and concurrent objects which execute asynchronously. The actors model provides flexible mechanisms for building parallel and distributed software systems.
 Source: [Actor Model white paper](http://wiki.c2.com/?ActorsModel)
- 
+
 ## Why Actors
 
 * to store "shared" mutable state
 * to model a State Machine (FSM).
 * to simplify the world and forget about concurrency
-  
+
 ## New in Typed Actors
 
 * message type check (!)
@@ -41,7 +41,7 @@ Source: [Actor Model white paper](http://wiki.c2.com/?ActorsModel)
 By default, if there is an exception thrown inside a typed actor, the actor is stopped.
 
 ## Other
- 
+
 * The most important page: [Akka actor typed docs](https://doc.akka.io/docs/akka/current/typed/guide/index.html)
 * The implementation of the actor is in the same file as test so you can focus on one file
 
@@ -60,4 +60,9 @@ An ActorRef is the identity or address of an Actor instance. It is valid only du
 ActorContext
 * creating a child actor
 * logging a msg
-* 
+*
+
+# Docs
+
+* [Scheduling messages to self](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#scheduling-messages-to-self)
+* [Send Future result to self](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#send-future-result-to-self)
